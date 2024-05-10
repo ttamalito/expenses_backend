@@ -11,7 +11,7 @@ const db = require('./database/databaseConfig');
 
 
 const PORT = 'mongodb://localhost:27017';
-const databaseName = 'expenses';
+const databaseName = 'expenses_db';
 // import the routes
 const baseRoutes = require('./routes/base.routes');
 

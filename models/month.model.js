@@ -19,8 +19,19 @@ async function createMonth(month, year) {
     return false;
 }
 
+/**
+ *
+ * @returns {Promise<[ObjectId]>}
+ */
+async function getAllExpenses() {
+    const result = await db.getDatabase().collection(COLLECTION).find({});
+
+    return result.toArray();
+}
+
 
 
 module.exports = {
-    createMonth: createMonth
+    createMonth: createMonth,
+    getAllExpenses: getAllExpenses
 }
