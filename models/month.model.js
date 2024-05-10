@@ -29,6 +29,20 @@ async function getAllExpenses() {
     return result.toArray();
 }
 
+/**
+ *
+ * @param {ObjectId} id
+ * @param {ObjectId} expenseId
+ * @returns {Promise<boolean>} true if successful
+ */
+async function addExpense(id, expenseId) {
+    const result = await db.getDatabase().collection(COLLECTION).updateOne(
+        {_id: id}, {$push: {expenses: expenseId}}
+    );
+
+    return result.modifiedCount === 1;
+}
+
 
 
 module.exports = {
