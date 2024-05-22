@@ -4,7 +4,7 @@ const express = require('express');
 //const path = require('path');
 // import files
 const db = require('./database/databaseConfig');
-//const addCORSHeader = require('./middlewares/addCORSHeader');
+const addCORSHeader = require('./middlewares/addCORSHeader');
 
 
 //const bodyParser = require('body-parser');
@@ -14,7 +14,7 @@ const PORT = 'mongodb://localhost:27017';
 const databaseName = 'expenses_db';
 // import the routes
 const baseRoutes = require('./routes/base.routes');
-
+const expenseRoutes = require('./routes/expenses.routes')
 
 const app = express();
 
@@ -26,14 +26,14 @@ app.use(express.urlencoded({
 }));
 
 
-//app.use(addCORSHeader);
+app.use(addCORSHeader);
 
 
 
 
 // use the routes
 app.use(baseRoutes);
-
+app.use(expenseRoutes);
 // the http server
 let server;
 // start listening, if we connect to the database
