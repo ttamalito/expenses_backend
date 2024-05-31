@@ -1,4 +1,5 @@
 const db = require('../database/databaseConfig');
+
 const ObjectId = require('mongodb').ObjectId;
 
 const COLLECTION = 'expenses'
@@ -29,5 +30,6 @@ async function getExpenseById(id){
 
 
 module.exports = {
-    createExpense: createExpense
+    createExpense: createExpense,
+    getExpenseById: getExpenseById
 }
