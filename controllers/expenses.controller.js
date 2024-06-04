@@ -1,8 +1,16 @@
 
 const getMonth = require('../utils/getMonth')
 const expenseModel = require('../models/expense.model');
-const monthModel = require('../models/month.model')
+const monthModel = require('../models/month.model');
+const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
 async function addExpense(req, res, next) {
 
     const amount = parseFloat(req.body.amount);
@@ -15,10 +23,10 @@ async function addExpense(req, res, next) {
     }
     const type = req.body.type;
     const notes = req.body.notes;
-
+    const date = req.body.date;
     // now that we have the data
     // save it to the data base
-    const expenseId = await expenseModel.createExpense(amount, month, type, notes, year);
+    const expenseId = await expenseModel.createExpense(amount, month, type, notes, year,date);
 
     // now save it to the month
     const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
@@ -79,8 +87,39 @@ async function getExpensesForAMonth(req, res, next) {
     })
 }
 
+/**
+ * Returns all the expenses of a single type for a month
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
+async function getExpensesOfATypeForAMonth(req, res, next) {
+    // get the type from the body, i.e. the form
+    const type = req.body.type;
+    const month = Number(req.params.month);
+    const year = Number(req.params.year);
+
+
+    // query the data base
+    const expensesOfAType = await expenseModel.getExpensesOfAType(type);
+    console.log(`Expenses of a type`);
+    console.log(expensesOfAType);
+    // get all the expenses for a month
+    const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
+    if (!monthId) {
+        // there is nothing in the database
+        return res.json({result: false, message: 'Not a valid month or year'});
+    }
+    const expensesOfTheMonth = await monthModel.getAllExpenses(monthId);
+
+    // get all the expenses of the type for the month
+    const finalExpenses = queryExpensesOfAType.queryExpensesForAMonth(expensesOfTheMonth, expensesOfAType);
+    res.json({expenses: finalExpenses});
+} // end of getExpensesOFATypeForAMonth
 
 module.exports = {
     addExpense: addExpense,
-    getExpensesForAMonth: getExpensesForAMonth
+    getExpensesForAMonth: getExpensesForAMonth,
+    getExpensesOfATypeForAMonth: getExpensesOfATypeForAMonth
 }
