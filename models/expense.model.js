@@ -4,13 +4,24 @@ const ObjectId = require('mongodb').ObjectId;
 
 const COLLECTION = 'expenses'
 
-async function createExpense(amount, month, type, notes, year) {
+/**
+ * Saves an expense to the database
+ * @param amount
+ * @param month
+ * @param type
+ * @param notes
+ * @param year
+ * @param date
+ * @returns {Promise<any>}
+ */
+async function createExpense(amount, month, type, notes, year, date) {
     const result = await db.getDatabase().collection(COLLECTION).insertOne({
         amount: amount,
         type: type,
         notes: notes,
         month: month,
-        year: year
+        year: year,
+        date: date
     })
 
     return result.insertedId
@@ -28,8 +39,22 @@ async function getExpenseById(id){
     return result;
 }
 
+/**
+ * Queries all the expenses of a given type
+ * @param {string} type
+ * @returns {Promise<*>}
+ */
+async function getExpensesOfAType(type) {
+    const result = await db.getDatabase().collection(COLLECTION).find({
+        type: type
+    })
+
+    return result.toArray();
+}
+
 
 module.exports = {
     createExpense: createExpense,
-    getExpenseById: getExpenseById
+    getExpenseById: getExpenseById,
+    getExpensesOfAType: getExpensesOfAType
 }
