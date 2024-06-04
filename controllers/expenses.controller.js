@@ -42,6 +42,13 @@ async function addExpense(req, res, next) {
     return res.json({result: true});
 } // end of add expense
 
+/**
+ * Returns the expenses for a given month
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
 async function getExpensesForAMonth(req, res, next) {
     // get the month
     const month = Number(req.params.month);
