@@ -20,13 +20,14 @@ async function createMonth(month, year) {
 }
 
 /**
- *
+ * @param {ObjectId} monthId
  * @returns {Promise<[ObjectId]>}
  */
-async function getAllExpenses() {
-    const result = await db.getDatabase().collection(COLLECTION).find({});
+async function getAllExpenses(monthId) {
+    const result = await db.getDatabase().collection(COLLECTION).findOne(
+        {_id: monthId});
 
-    return result.toArray();
+    return result.expenses;
 }
 
 /**
@@ -43,9 +44,47 @@ async function addExpense(id, expenseId) {
     return result.modifiedCount === 1;
 }
 
+/**
+ *
+ * @param {number} month
+ * @param {number} year
+ * @returns {Promise<ObjectId>}
+ */
+async function getMonthIdByNumberAndYear(month, year) {
+    const result = await db.getDatabase().collection(COLLECTION).findOne({
+        month: month, year: year
+    });
+
+    if (result) {
+        // there is something
+        return result._id;
+    }
+
+    return false;
+}
+
+/**
+ * Queries all the expenses of a given type for a month in a specific year.
+ * @param month
+ * @param year
+ * @param type
+ * @returns {Promise<void>}
+ */
+async function getExpensesOfAType(month, year, type) {
+    const result = await db.getDatabase().collection(COLLECTION).find({
+        month: month, year: year, type: type
+    });
+
+    // result should be converted to an array
+    return result.toArray();
+
+}
 
 
 module.exports = {
     createMonth: createMonth,
-    getAllExpenses: getAllExpenses
+    getAllExpenses: getAllExpenses,
+    addExpense: addExpense,
+    getMonthIdByNumberAndYear: getMonthIdByNumberAndYear
+
 }
