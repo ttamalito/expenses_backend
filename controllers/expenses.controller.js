@@ -3,9 +3,10 @@ const getMonth = require('../utils/getMonth')
 const expenseModel = require('../models/expense.model');
 const monthModel = require('../models/month.model');
 const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
+const incomeModel = require('../models/income.model');
 
 /**
- *
+ * Adds an expense/income to the database
  * @param req
  * @param res
  * @param next
@@ -13,7 +14,11 @@ const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
  */
 async function addExpense(req, res, next) {
 
-    const amount = parseFloat(req.body.amount);
+    let amount = parseFloat(req.body.amount);
+    // amount should be greter than zero
+    if (amount <= 0) {
+        return res.json({result: false, message: 'Amount is negative'});
+    }
     const month = Number(req.body.month);
     const year = Number(req.body.year);
     // verify that it is the correct month
@@ -24,9 +29,22 @@ async function addExpense(req, res, next) {
     const type = req.body.type;
     const notes = req.body.notes;
     const date = req.body.date;
+    // get the type of transaction
+    const transaction = req.body.transaction;
+    // check it amount should be converted to negative
+    if (transaction === 'expense') {
+        // make it negative
+        amount = (-1) * amount;
+    }
     // now that we have the data
     // save it to the data base
-    const expenseId = await expenseModel.createExpense(amount, month, type, notes, year,date);
+    let expenseId;
+    if (transaction === 'expense') {
+        expenseId = await expenseModel.createExpense(amount, month, type, notes, year,date);
+    } else {
+        // it is an income
+        expenseId = await incomeModel.createIncome(amount, month, type, notes, year, date);
+    }
 
     // now save it to the month
     const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
@@ -34,16 +52,34 @@ async function addExpense(req, res, next) {
     // check if null
     if (!monthId) {
         // there is nothing
-        // create a new one
+        // create a new month
+        // query the global set up from the database
         const monthResult = await monthModel.createMonth(month, year);
         if (monthResult) {
             // all gucci
             const monthId2 = await monthModel.getMonthIdByNumberAndYear(month, year);
-            const res = await monthModel.addExpense(monthId2, expenseId)
+            let saveResult;
+            if (transaction === 'expense') {
+                saveResult = await monthModel.addExpense(monthId2, expenseId)
+            } else {
+                saveResult = await monthModel.addIncome(monthId2, expenseId)
+            }
+            // check if it could not be saved
+            if (!saveResult) {
+                return res.json({result: false, message: 'CHeck backend'});
+            }
         }
     } else {
-        // it exists
-        const res = await monthModel.addExpense(monthId, expenseId)
+        let saveResult;
+        if (transaction === 'expense') {
+            saveResult = await monthModel.addExpense(monthId, expenseId)
+        } else {
+            saveResult = await monthModel.addIncome(monthId, expenseId)
+        }
+        // check if it could not be saved
+        if (!saveResult) {
+            return res.json({result: false, message: 'CHeck backend'});
+        }
     }
 
     // all gucci
@@ -75,15 +111,30 @@ async function getExpensesForAMonth(req, res, next) {
         return res.json({result: false, message: 'No expenses for that month'})
     }
 
+    const incomesIds = await monthModel.getAllIncomes(monthId);
+    if (!incomesIds) {
+        return res.json({result: false, message: 'Something went wrong while getting the incomes'})
+    }
+    // get the incomes
+    const incomes = await Promise.all(incomesIds.map(async id => {
+        return await incomeModel.getIncomeById(id)
+    }))
     // get the expenses
     const expenses = await Promise.all(expensesIds.map(async id => {
         return await expenseModel.getExpenseById(id)
     }))
 
+    // get the whole month
+    const monthObject   = await monthModel.getMonth(monthId);
+    // send the budgets
+
     // seems to be all good
     res.json({
         result: true,
-        expenses: expenses
+        expenses: expenses,
+        monthBudget: monthObject.budget,
+        typesBudget: monthObject.typesBudget,
+        incomes: incomes
     })
 }
 
@@ -115,7 +166,7 @@ async function getExpensesOfATypeForAMonth(req, res, next) {
 
     // get all the expenses of the type for the month
     const finalExpenses = queryExpensesOfAType.queryExpensesForAMonth(expensesOfTheMonth, expensesOfAType);
-    res.json({expenses: finalExpenses});
+    res.json({result: true, expenses: finalExpenses});
 } // end of getExpensesOFATypeForAMonth
 
 module.exports = {

@@ -53,7 +53,7 @@ async function modifySetUp(req, res, next) {
         rent,
         other
     }
-    console.log(typesBudget);
+    //console.log(`MOnth budget: ${monthBudget}`);
 
     const savedResult = await setUpModel.modifySetUpByYear(year, monthBudget, typesBudget);
 
