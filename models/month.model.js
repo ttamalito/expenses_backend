@@ -3,12 +3,15 @@ const ObjectId = require('mongodb').ObjectId;
 
 const COLLECTION = 'months'
 
-async function createMonth(month, year) {
+async function createMonth(month, year, maxBudget, typesBudget) {
 
     const result = await db.getDatabase().collection(COLLECTION).insertOne({
         month: month,
         year: year,
-        expenses: []
+        budget: maxBudget,
+        typesBudget: typesBudget,
+        expenses: [],
+        incomes: []
     })
 
 
@@ -31,6 +34,18 @@ async function getAllExpenses(monthId) {
 }
 
 /**
+ * Queries the list of incomes
+ * @param {ObjectId} monthId
+ * @returns {Promise<[]>}
+ */
+async function getAllIncomes(monthId) {
+    const result = await db.getDatabase().collection(COLLECTION).findOne(
+        {_id: monthId});
+
+    return result.incomes;
+}
+
+/**
  *
  * @param {ObjectId} id
  * @param {ObjectId} expenseId
@@ -39,6 +54,20 @@ async function getAllExpenses(monthId) {
 async function addExpense(id, expenseId) {
     const result = await db.getDatabase().collection(COLLECTION).updateOne(
         {_id: id}, {$push: {expenses: expenseId}}
+    );
+
+    return result.modifiedCount === 1;
+}
+
+/**
+ *
+ * @param {ObjectId} id
+ * @param {ObjectId} expenseId
+ * @returns {Promise<boolean>} true if successful
+ */
+async function addIncome(id, expenseId) {
+    const result = await db.getDatabase().collection(COLLECTION).updateOne(
+        {_id: id}, {$push: {incomes: expenseId}}
     );
 
     return result.modifiedCount === 1;
@@ -80,11 +109,28 @@ async function getExpensesOfAType(month, year, type) {
 
 }
 
+/**
+ *
+ * @param {ObjectId} id
+ * @returns {Promise<*|null>}
+ */
+async function getMonth(id) {
+    const result = await db.getDatabase().collection(COLLECTION).findOne({_id: id});
+    if (!result) {
+        return null;
+    }
+
+    return result;
+}
+
 
 module.exports = {
     createMonth: createMonth,
     getAllExpenses: getAllExpenses,
     addExpense: addExpense,
-    getMonthIdByNumberAndYear: getMonthIdByNumberAndYear
+    getMonthIdByNumberAndYear: getMonthIdByNumberAndYear,
+    getMonth: getMonth,
+    getAllIncomes,
+    addIncome
 
 }
