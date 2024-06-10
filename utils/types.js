@@ -1,7 +1,7 @@
 // will contain all the types of expenses
 const expensesTypes = {
     ESSENTIAL_FOOD: "essential_food",
-        NON_ESSENTIAL_FOOD: "non_essential_food",
+    NON_ESSENTIAL_FOOD: "non_essential_food",
     PARTY: "party",
     PHONE: 'phone',
     INSURANCE: 'insurance',
@@ -10,6 +10,7 @@ const expensesTypes = {
     GIFT: 'gift',
     RECREATIONAL_PURCHASE: 'recreational_purchase',
     RENT: 'rent',
+    INCOME: 'income',
     OTHER: 'other'
 }
 
