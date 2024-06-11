@@ -4,6 +4,7 @@ const expenseModel = require('../models/expense.model');
 const monthModel = require('../models/month.model');
 const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
 const incomeModel = require('../models/income.model');
+const setUpModel = require('../models/setup.model');
 
 /**
  * Adds an expense/income to the database
@@ -54,7 +55,8 @@ async function addExpense(req, res, next) {
         // there is nothing
         // create a new month
         // query the global set up from the database
-        const monthResult = await monthModel.createMonth(month, year);
+        const setUp = await setUpModel.getSetUpByYear(2024);
+        const monthResult = await monthModel.createMonth(month, year, setUp.monthBudget, setUp.typesBudget);
         if (monthResult) {
             // all gucci
             const monthId2 = await monthModel.getMonthIdByNumberAndYear(month, year);
