@@ -3,6 +3,14 @@ const ObjectId = require('mongodb').ObjectId;
 
 const COLLECTION = 'months'
 
+/**
+ *
+ * @param month
+ * @param year
+ * @param {number} maxBudget
+ * @param {Object} typesBudget
+ * @returns {Promise<boolean>}
+ */
 async function createMonth(month, year, maxBudget, typesBudget) {
 
     const result = await db.getDatabase().collection(COLLECTION).insertOne({
