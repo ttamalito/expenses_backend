@@ -153,11 +153,17 @@ async function getExpensesOfATypeForAMonth(req, res, next) {
     const month = Number(req.params.month);
     const year = Number(req.params.year);
 
-
+    // return the incomes, if necessary
+    if (type === 'income') {
+        const incomesOfTheMonth = await incomeModel.queryIncomesByMonthAndYear(month, year);
+        if (!incomesOfTheMonth) {
+            // there is nothing in the database
+            return res.status(400).json({result: false, message: 'Failed to query the incomes, check your request'});
+        }
+        return res.json({result: true, expenses: incomesOfTheMonth});
+    }
     // query the data base
     const expensesOfAType = await expenseModel.getExpensesOfAType(type);
-    console.log(`Expenses of a type`);
-    console.log(expensesOfAType);
     // get all the expenses for a month
     const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
     if (!monthId) {
