@@ -40,19 +40,15 @@ async function modifySetUp(req, res, next) {
     const rent = parseInt(req.body[expensesTypes.RENT]);
     const other = parseInt(req.body[expensesTypes.OTHER]);
 
-    // save the data to the database
-    const typesBudget = {
-        essential_food: essentialFood,
-        non_essential_food: nonEssentialFood,
-        party,
-        phone,
-        insurance,
-        home,
-        gift,
-        recreational_purchase: recreationalPurchase,
-        rent,
-        other
+    const typesBudget = {};
+    // retrieve the values from the body
+    for (const value of Object.values(expensesTypes)) {
+        const numericValue = parseInt(req.body[value]);
+        console.log(`Value: ${value} Numeric value: ${numericValue}`);
+        typesBudget[value] = numericValue;
     }
+
+
     //console.log(`MOnth budget: ${monthBudget}`);
 
     const savedResult = await setUpModel.modifySetUpByYear(year, monthBudget, typesBudget);
