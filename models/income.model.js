@@ -39,7 +39,25 @@ async function getIncomeById(id){
     return result;
 }
 
+/**
+ * Queries all the incomes for a given month and year
+ * @param month
+ * @param year
+ * @returns {Promise<[]|null>} The array of incomes
+ */
+async function queryIncomesByMonthAndYear(month, year) {
+    const result = await db.getDatabase().collection(COLLECTION).find({
+        month: month,
+        year: year
+    }).toArray();
+    if (!result) {
+        return null
+    }
+    return result;
+} // end ofo queryIncomesByMonthAndYear
+
 module.exports = {
     getIncomeById,
-    createIncome
+    createIncome,
+    queryIncomesByMonthAndYear
 }
