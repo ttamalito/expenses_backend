@@ -12,7 +12,7 @@ function queryExpensesForAMonth(expensesOfTheMonth, expensesOfAType) {
     const finalExpenses = [];
     for (const expenseOfAType of expensesOfAType) {
         if (arrayContainsObjectId(expensesOfTheMonth, expenseOfAType._id.toString()))
-            finalExpenses.push(expensesOfAType); // add the expense because it belongs to the month
+            finalExpenses.push(expenseOfAType); // add the expense because it belongs to the month
     }
     // return the finalExpenses
     return finalExpenses;
