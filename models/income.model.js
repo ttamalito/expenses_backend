@@ -56,8 +56,22 @@ async function queryIncomesByMonthAndYear(month, year) {
     return result;
 } // end ofo queryIncomesByMonthAndYear
 
+/**
+ * Queries all the incomes for a given year.
+ *
+ * @param {number} year - The year for which incomes are queried.
+ * @return {Promise<Array>} A promise that resolves to an array of incomes for the given year.
+ */
+async function queryAllIncomesOfAYear(year) {
+    const result = await db.getDatabase().collection(COLLECTION).find({
+        year: year
+    })
+    return result.toArray();
+}
+
 module.exports = {
     getIncomeById,
     createIncome,
-    queryIncomesByMonthAndYear
+    queryIncomesByMonthAndYear,
+    queryAllIncomesOfAYear
 }
