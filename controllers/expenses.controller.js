@@ -177,8 +177,30 @@ async function getExpensesOfATypeForAMonth(req, res, next) {
     res.json({result: true, expenses: finalExpenses});
 } // end of getExpensesOFATypeForAMonth
 
+/**
+ * Retrieves the expenses and incomes for a given year from the database.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+async function getExpensesForAYear(req, res, next) {
+    try {
+        const year = Number(req.params.year);
+        const expensesOfTheYear = await expenseModel.getExpensesForAYear(year);
+        const incomesOfTheYear = await incomeModel.getIncomesForAYear(year);
+        res.json({result: true, expenses: expensesOfTheYear, incomes: incomesOfTheYear});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({result: false, message: 'Failed to query the expenses, check your request'});
+    }
+
+}
+
 module.exports = {
     addExpense: addExpense,
     getExpensesForAMonth: getExpensesForAMonth,
-    getExpensesOfATypeForAMonth: getExpensesOfATypeForAMonth
+    getExpensesOfATypeForAMonth: getExpensesOfATypeForAMonth,
+    getExpensesForAYear: getExpensesForAYear
 }
