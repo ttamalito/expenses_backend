@@ -52,9 +52,23 @@ async function getExpensesOfAType(type) {
     return result.toArray();
 }
 
+/**
+ * Queries all the expenses for a given year.
+ *
+ * @param {number} year - The year for which expenses are queried
+ * @return {Promise<Array>} An array of expenses for the given year
+ */
+async function getAllExpensesForAYear(year) {
+    const result = await db.getDatabase().collection(COLLECTION).find({
+        year: year
+    })
+
+    return result.toArray();
+}
 
 module.exports = {
     createExpense: createExpense,
     getExpenseById: getExpenseById,
-    getExpensesOfAType: getExpensesOfAType
+    getExpensesOfAType: getExpensesOfAType,
+    getAllExpensesForAYear: getAllExpensesForAYear
 }
