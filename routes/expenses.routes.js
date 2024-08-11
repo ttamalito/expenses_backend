@@ -15,6 +15,6 @@ router.get('/getExpensesForAYear/:year', expensesController.getExpensesForAYear)
 
 router.get('/expenses/:year/:type', expensesController.getExpensesForAYearOfAType);
 
-router.get('expenses/total-spent/:year', expensesController.getTotalSpentOnAYear);
+router.get('/expenses/total-spent/:year', expensesController.getTotalSpentOnAYear);
 
 module.exports = router;
