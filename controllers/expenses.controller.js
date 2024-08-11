@@ -188,8 +188,8 @@ async function getExpensesOfATypeForAMonth(req, res, next) {
 async function getExpensesForAYear(req, res, next) {
     try {
         const year = Number(req.params.year);
-        const expensesOfTheYear = await expenseModel.getExpensesForAYear(year);
-        const incomesOfTheYear = await incomeModel.getIncomesForAYear(year);
+        const expensesOfTheYear = await expenseModel.getAllExpensesForAYear(year);
+        const incomesOfTheYear = await incomeModel.queryAllIncomesOfAYear(year);
         res.json({result: true, expenses: expensesOfTheYear, incomes: incomesOfTheYear});
     } catch (err) {
         console.log(err);
@@ -198,9 +198,36 @@ async function getExpensesForAYear(req, res, next) {
 
 }
 
+/**
+ * Retrieves the expenses of a specific type for a given year from the database.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+async function getExpensesForAYearOfAType(req, res, next) {
+    try {
+        const year = Number(req.params.year);
+        const type = req.body.type;
+
+        if (type === 'income') {
+            const incomesOfTheYear = await incomeModel.queryAllIncomesOfAYear(year);
+            return res.json({result: true, expenses: incomesOfTheYear});
+        }
+
+        const expensesOfTheYear = await expenseModel.getExpensesForAYearOfAType(year, type);
+        res.json({result: true, expenses: expensesOfTheYear});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({result: false, message: 'Failed to query the expenses, check your request'});
+    }
+}
+
 module.exports = {
     addExpense: addExpense,
     getExpensesForAMonth: getExpensesForAMonth,
     getExpensesOfATypeForAMonth: getExpensesOfATypeForAMonth,
-    getExpensesForAYear: getExpensesForAYear
+    getExpensesForAYear: getExpensesForAYear,
+    getExpensesForAYearOfAType: getExpensesForAYearOfAType
 }
