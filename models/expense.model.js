@@ -86,14 +86,15 @@ async function getExpensesForAYearOfAType(year, type) {
  * Calculates the total amount spent on expenses for a specific year.
  *
  * @param {number} year - The year for which the total spent is calculated
- * @return {number} The total amount spent on expenses for the given year
+ * @return {Promise<number>} The total amount spent on expenses for the given year
  */
-async function getTotalSpentOnAYear(year) {
+async function queryTotalSpentOnAYear(year) {
     const result = await db.getDatabase().collection(COLLECTION).find({
         year: year
     });
     let total = 0;
-    for (let expense of result) {
+    const expenses = await result.toArray();
+    for (let expense of expenses) {
         total = total + expense.amount;
 
     }
@@ -107,5 +108,5 @@ module.exports = {
     getExpensesOfAType: getExpensesOfAType,
     getAllExpensesForAYear: getAllExpensesForAYear,
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
-    getTotalSpentOnAYear: getTotalSpentOnAYear
+    queryTotalSpentOnAYear: queryTotalSpentOnAYear
 }
