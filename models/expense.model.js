@@ -82,10 +82,30 @@ async function getExpensesForAYearOfAType(year, type) {
     return result.toArray();
 }
 
+/**
+ * Calculates the total amount spent on expenses for a specific year.
+ *
+ * @param {number} year - The year for which the total spent is calculated
+ * @return {number} The total amount spent on expenses for the given year
+ */
+async function getTotalSpentOnAYear(year) {
+    const result = await db.getDatabase().collection(COLLECTION).find({
+        year: year
+    });
+    let total = 0;
+    for (let expense of result) {
+        total = total + expense.amount;
+
+    }
+    return total;
+
+}
+
 module.exports = {
     createExpense: createExpense,
     getExpenseById: getExpenseById,
     getExpensesOfAType: getExpensesOfAType,
     getAllExpensesForAYear: getAllExpensesForAYear,
-    getExpensesForAYearOfAType: getExpensesForAYearOfAType
+    getExpensesForAYearOfAType: getExpensesForAYearOfAType,
+    getTotalSpentOnAYear: getTotalSpentOnAYear
 }
