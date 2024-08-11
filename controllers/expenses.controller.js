@@ -224,10 +224,30 @@ async function getExpensesForAYearOfAType(req, res, next) {
     }
 }
 
+/**
+ * Retrieves the total amount spent on expenses for a specific year from the database.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
+async function getTotalSpentOnAYear(req, res, next) {
+    try {
+        const year = Number(req.params.year);
+        const totalSpent = await expenseModel.getTotalSpentOnAYear(year);
+        res.json({result: true, totalSpent: totalSpent});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({result: false, message: 'Failed to query the expenses, check your request'});
+    }
+}
+
 module.exports = {
     addExpense: addExpense,
     getExpensesForAMonth: getExpensesForAMonth,
     getExpensesOfATypeForAMonth: getExpensesOfATypeForAMonth,
     getExpensesForAYear: getExpensesForAYear,
-    getExpensesForAYearOfAType: getExpensesForAYearOfAType
+    getExpensesForAYearOfAType: getExpensesForAYearOfAType,
+    getTotalSpentOnAYear: getTotalSpentOnAYear
 }
