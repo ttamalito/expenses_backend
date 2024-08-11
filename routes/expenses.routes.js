@@ -13,4 +13,6 @@ router.post('/getExpensesOfType/:month/:year', expensesController.getExpensesOfA
 
 router.get('/getExpensesForAYear/:year', expensesController.getExpensesForAYear);
 
+router.get('/expenses/:year/:type', expensesController.getExpensesForAYearOfAType);
+
 module.exports = router;
