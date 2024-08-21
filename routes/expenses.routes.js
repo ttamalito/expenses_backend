@@ -13,8 +13,8 @@ router.post('/getExpensesOfType/:month/:year', expensesController.getExpensesOfA
 
 router.get('/getExpensesForAYear/:year', expensesController.getExpensesForAYear);
 
-router.get('/expenses/:year/:type', expensesController.getExpensesForAYearOfAType);
+router.get('/expenses/single-type', expensesController.getExpensesForAYearOfAType); // query params: year, type
 
-router.get('/expenses/total-spent/:year', expensesController.getTotalSpentOnAYear);
+router.get('/expenses/total-spent', expensesController.getTotalSpentOnAYear); // query params: year
 
 module.exports = router;
