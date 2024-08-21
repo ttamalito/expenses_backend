@@ -208,8 +208,8 @@ async function getExpensesForAYear(req, res, next) {
  */
 async function getExpensesForAYearOfAType(req, res, next) {
     try {
-        const year = Number(req.params.year);
-        const type = req.body.type;
+        const year = Number(req.query.year);
+        const type = req.query.type;
 
         if (type === 'income') {
             const incomesOfTheYear = await incomeModel.queryAllIncomesOfAYear(year);
@@ -234,14 +234,16 @@ async function getExpensesForAYearOfAType(req, res, next) {
  */
 async function getTotalSpentOnAYear(req, res, next) {
     try {
-        const year = Number(req.params.year);
-        const totalSpent = await expenseModel.getTotalSpentOnAYear(year);
-        res.json({result: true, totalSpent: totalSpent});
+        const year = Number(req.query.year);
+        const totalSpent = await expenseModel.queryTotalSpentOnAYear(year);
+        return res.json({result: true, totalSpent: totalSpent});
     } catch (err) {
         console.log(err);
         res.status(500).json({result: false, message: 'Failed to query the expenses, check your request'});
     }
 }
+
+
 
 module.exports = {
     addExpense: addExpense,
