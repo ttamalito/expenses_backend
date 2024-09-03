@@ -5,6 +5,7 @@ const monthModel = require('../models/month.model');
 const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
 const incomeModel = require('../models/income.model');
 const setUpModel = require('../models/setup.model');
+const {ObjectId} = require("mongodb");
 
 /**
  * Adds an expense/income to the database
@@ -243,6 +244,34 @@ async function getTotalSpentOnAYear(req, res, next) {
     }
 }
 
+async function modifySingleExpense(req, res, next) {
+    const id = req.query.id;
+    const amount = parseFloat(req.body.amount);
+    const date = req.body.date;
+    const notes = req.body.notes;
+    const type = req.body.type;
+
+
+    const expenseId = new ObjectId(id);
+
+    const expense = await expenseModel.getExpenseById(expenseId);
+    if (!expense) {
+        res.status(400).json({result: false, message: 'The expense does not exist'});
+    }
+
+    try {
+        const result = await expenseModel.modifySingleExpense(expenseId, amount, expense.month, type, notes, expense.year ,date);
+        if (result) {
+            return res.status(204).send();
+        } else {
+            return res.status(500).json({result: false, message: 'Failed to modify the expense'});
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({result: false, message: 'Failed to modify the expense'});
+    }
+}
+
 
 
 module.exports = {
@@ -251,5 +280,6 @@ module.exports = {
     getExpensesOfATypeForAMonth: getExpensesOfATypeForAMonth,
     getExpensesForAYear: getExpensesForAYear,
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
-    getTotalSpentOnAYear: getTotalSpentOnAYear
+    getTotalSpentOnAYear: getTotalSpentOnAYear,
+    modifySingleExpense: modifySingleExpense
 }
