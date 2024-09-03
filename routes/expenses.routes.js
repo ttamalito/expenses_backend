@@ -17,4 +17,6 @@ router.get('/expenses/single-type', expensesController.getExpensesForAYearOfATyp
 
 router.get('/expenses/total-spent', expensesController.getTotalSpentOnAYear); // query params: year
 
+router.get('expenses/modify', expensesController.modifySingleExpense) // query params: id
+
 module.exports = router;
