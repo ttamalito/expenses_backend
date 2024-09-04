@@ -30,7 +30,7 @@ async function createExpense(amount, month, type, notes, year, date) {
 /**
  *
  * @param {ObjectId} id
- * @returns {Promise<void>} the object with the data
+ * @returns {Promise<Object>} the object with the data
  */
 async function getExpenseById(id){
     const result  = await db.getDatabase().collection(COLLECTION).findOne(
@@ -102,11 +102,32 @@ async function queryTotalSpentOnAYear(year) {
 
 }
 
+/**
+ *
+ * @param {ObjectId} expenseId
+ * @param {number} amount
+ * @param {number} month
+ * @param {string} type
+ * @param {string} notes
+ * @param {number} year
+ * @param {string} date
+ * @returns {Promise<boolean>}
+ */
+async function modifySingleExpense(expenseId, amount, month, type, notes, year, date) {
+    const result = await db.getDatabase().collection(COLLECTION).updateOne(
+        {_id: expenseId}, {$set: {amount: amount, month: month, type: type, notes: notes, year: year, date: date}}
+    );
+
+    return result.modifiedCount === 1;
+
+}
+
 module.exports = {
     createExpense: createExpense,
     getExpenseById: getExpenseById,
     getExpensesOfAType: getExpensesOfAType,
     getAllExpensesForAYear: getAllExpensesForAYear,
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
-    queryTotalSpentOnAYear: queryTotalSpentOnAYear
+    queryTotalSpentOnAYear: queryTotalSpentOnAYear,
+    modifySingleExpense: modifySingleExpense
 }
