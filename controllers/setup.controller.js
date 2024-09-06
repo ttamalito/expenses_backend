@@ -54,7 +54,12 @@ async function modifySetUp(req, res, next) {
     const savedResult = await setUpModel.modifySetUpByYear(year, monthBudget, typesBudget);
 
     if (!savedResult) {
-        return res.json({result: false});
+        // create a new setup
+        const created = await setUpModel.createSetUp(year, monthBudget, typesBudget); // TODO: change this!!
+        if (!created) {
+            return res.json({result: false});
+        }
+        //return res.json({result: false});
     }
 
     return res.json({result: true});

@@ -57,6 +57,10 @@ async function addExpense(req, res, next) {
         // create a new month
         // query the global set up from the database
         const setUp = await setUpModel.getSetUpByYear(2024);
+        if (!setUp) {
+            // there is nothing in the database
+            return res.json({result: false, message: 'No setup for the year'});
+        }
         const monthResult = await monthModel.createMonth(month, year, setUp.monthBudget, setUp.typesBudget);
         if (monthResult) {
             // all gucci
@@ -244,6 +248,24 @@ async function getTotalSpentOnAYear(req, res, next) {
     }
 }
 
+async function getTotalEarnedOnAYear(req, res, next) {
+    try {
+        const year = Number(req.query.year);
+        const totalEarned = await incomeModel.queryTotalEarnedOnAYear(year);
+        return res.json({result: true, totalEarned: totalEarned});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({result: false, message: 'Failed to query the incomes, check your request'});
+    }
+}
+
+/**
+ * Modifies a single expense in the database.
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
 async function modifySingleExpense(req, res, next) {
     const id = req.query.id;
     const amount = parseFloat(req.body.amount);

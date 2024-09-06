@@ -34,6 +34,10 @@ async function createSetUp(year, monthBudget, typesBudget) {
 async function getSetUpByYear(year) {
     const result = await db.getDatabase().collection(COLLECTION).findOne({year: year});
 
+    if (!result) {
+        return null;
+    }
+
     if (result._id) {
         return result;
     }
@@ -53,6 +57,9 @@ async function modifySetUpByYear(year, monthBudget, typesBudget) {
         year: year
     }, {$set: {monthBudget: monthBudget, typesBudget: typesBudget}});
 
+    if (!result) {
+        return false; // no result
+    }
     if (result.modifiedCount === 1) {
         console.log(`Global set up modified`);
         return true;
@@ -62,5 +69,6 @@ async function modifySetUpByYear(year, monthBudget, typesBudget) {
 
 module.exports = {
     getSetUpByYear: getSetUpByYear,
-    modifySetUpByYear: modifySetUpByYear
+    modifySetUpByYear: modifySetUpByYear,
+    createSetUp: createSetUp
 }
