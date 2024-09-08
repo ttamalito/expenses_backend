@@ -69,6 +69,20 @@ async function queryAllIncomesOfAYear(year) {
     return result.toArray();
 }
 
+/**
+ *
+ * @param year
+ * @returns {Promise<number>}
+ */
+async function queryTotalEarnedForAYer(year) {
+    const incomes = await queryAllIncomesOfAYear(year);
+    let total = 0;
+    for (const income of incomes) {
+        total += income.amount;
+    }
+    return total;
+}
+
 module.exports = {
     getIncomeById,
     createIncome,
