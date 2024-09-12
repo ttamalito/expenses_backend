@@ -70,11 +70,11 @@ async function queryAllIncomesOfAYear(year) {
 }
 
 /**
- *
- * @param year
+ * Queries the total amount earned for a given year
+ * @param {number} year
  * @returns {Promise<number>}
  */
-async function queryTotalEarnedForAYer(year) {
+async function queryTotalEarnedForAYear(year) {
     const incomes = await queryAllIncomesOfAYear(year);
     let total = 0;
     for (const income of incomes) {
@@ -83,9 +83,11 @@ async function queryTotalEarnedForAYer(year) {
     return total;
 }
 
+
 module.exports = {
     getIncomeById,
     createIncome,
     queryIncomesByMonthAndYear,
-    queryAllIncomesOfAYear
+    queryAllIncomesOfAYear,
+    queryTotalEarnedForAYear
 }
