@@ -16,6 +16,7 @@ const databaseName = 'expenses_db';
 const baseRoutes = require('./routes/base.routes');
 const expenseRoutes = require('./routes/expenses.routes')
 const setUpRoutes = require('./routes/setup.routes');
+const incomeRoutes = require('./routes/income.routes');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(addCORSHeader);
 app.use(baseRoutes);
 app.use(expenseRoutes);
 app.use(setUpRoutes);
+app.use( '/income',incomeRoutes);
 // the http server
 let server;
 // start listening, if we connect to the database
