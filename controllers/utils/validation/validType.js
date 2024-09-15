@@ -8,3 +8,5 @@ const expensesTypes = require('../../../utils/types');
 function isValidType(type) {
     return Object.values(expensesTypes).includes(type);
 }
+
+module.exports = isValidType;
