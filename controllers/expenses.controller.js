@@ -17,22 +17,13 @@ const {ObjectId} = require("mongodb");
 async function addExpense(req, res, next) {
 
     let amount = parseFloat(req.body.amount);
-    // amount should be greter than zero
-    if (amount <= 0) {
-        return res.json({result: false, message: 'Amount is negative'});
-    }
     const month = Number(req.body.month);
     const year = Number(req.body.year);
-    // verify that it is the correct month
-    const correctMonth = getMonth(month);
-    if (correctMonth === 'a') {
-        res.json({result: false, message: 'Invalid Month'});
-    }
     const type = req.body.type;
     const notes = req.body.notes;
     const date = req.body.date;
-    // get the type of transaction
     const transaction = req.body.transaction;
+
     // check it amount should be converted to negative
     if (transaction === 'expense') {
         // make it negative
