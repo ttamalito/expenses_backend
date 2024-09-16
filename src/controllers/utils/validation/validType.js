@@ -1,4 +1,4 @@
-const expensesTypes = require('../../../src/utils/types');
+const expensesTypes = require('../../../utils/types');
 
 /**
  * Validates that the type is one of the types in types.js

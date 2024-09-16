@@ -1,5 +1,5 @@
 const moment = require('moment');
-const convertDates = require('../src/utils/convertDates');
+const convertDates = require('../utils/convertDates');
 /**
  *
  * @param req

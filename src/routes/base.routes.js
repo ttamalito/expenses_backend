@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router();
 
-const baseController = require('../../controllers/base.controller');
+const baseController = require('../controllers/base.controller');
 
 
 router.post('/', baseController.base);

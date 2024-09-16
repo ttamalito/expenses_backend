@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const expensesController = require('../../controllers/expenses.controller');
-const expensesValidator = require('../../controllers/middlewares/expenses.validation');
+const expensesController = require('../controllers/expenses.controller');
+const expensesValidator = require('../controllers/middlewares/expenses.validation');
 
 
 router.post('/addExpense', expensesValidator.addExpense ,expensesController.addExpense);
