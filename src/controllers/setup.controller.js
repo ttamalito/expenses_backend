@@ -1,4 +1,4 @@
-const setUpModel = require('../../models/setup.model');
+const setUpModel = require('../models/setup.model');
 const {set} = require("express/lib/application");
 const {parse} = require("nodemon/lib/cli");
 const expensesTypes = require('../utils/types');

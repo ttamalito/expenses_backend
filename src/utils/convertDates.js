@@ -1,4 +1,4 @@
-const expenseModel = require('../../models/expense.model');
+const expenseModel = require('../models/expense.model');
 
 const moment = require('moment');
 

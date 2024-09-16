@@ -1,6 +1,6 @@
-const setUpModel = require('../../models/setup.model');
+const setUpModel = require('../models/setup.model');
 const expensesTypes = require('../utils/types');
-const incomeModel = require('../../models/income.model');
+const incomeModel = require('../models/income.model');
 
 /**
  * Retrieves the total earnings for a given year

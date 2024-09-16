@@ -3,10 +3,10 @@ const stringIsInteger = require("../utils/validation/stringIsInteger");
 const getMonth = require("../../utils/getMonth");
 const isValidType = require("../utils/validation/validType");
 const isValidTransactionType = require("../utils/validation/isValidTransactionType");
-const expenseModel = require("../../../models/expense.model");
-const incomeModel = require("../../../models/income.model");
-const monthModel = require("../../../models/month.model");
-const setUpModel = require("../../../models/setup.model");
+const expenseModel = require("../../models/expense.model");
+const incomeModel = require("../../models/income.model");
+const monthModel = require("../../models/month.model");
+const setUpModel = require("../../models/setup.model");
 
 /**
  * Validates all the data for addExpense in expenses.controller
