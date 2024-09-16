@@ -13,10 +13,10 @@ const addCORSHeader = require('./src/middlewares/addCORSHeader');
 const PORT = 'mongodb://localhost:27017';
 const databaseName = 'expenses_db';
 // import the routes
-const baseRoutes = require('./routes/base.routes');
-const expenseRoutes = require('./routes/expenses.routes')
-const setUpRoutes = require('./routes/setup.routes');
-const incomeRoutes = require('./routes/income.routes');
+const baseRoutes = require('./src/routes/base.routes');
+const expenseRoutes = require('./src/routes/expenses.routes')
+const setUpRoutes = require('./src/routes/setup.routes');
+const incomeRoutes = require('./src/routes/income.routes');
 
 const app = express();
 

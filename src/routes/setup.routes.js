@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router();
 
-const setUpController = require('../controllers/setup.controller');
+const setUpController = require('../../controllers/setup.controller');
 
 
 router.get('/getSetUp/:year', setUpController.getSetUp);
