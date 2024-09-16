@@ -1,8 +1,8 @@
 
-const getMonth = require('../utils/getMonth')
+const getMonth = require('../src/utils/getMonth')
 const expenseModel = require('../models/expense.model');
 const monthModel = require('../models/month.model');
-const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
+const queryExpensesOfAType = require('../src/utils/queryExpensesOfAType');
 const incomeModel = require('../models/income.model');
 const setUpModel = require('../models/setup.model');
 const {ObjectId} = require("mongodb");

@@ -1,5 +1,5 @@
 const setUpModel = require('../models/setup.model');
-const expensesTypes = require('../utils/types');
+const expensesTypes = require('../src/utils/types');
 const incomeModel = require('../models/income.model');
 
 /**
