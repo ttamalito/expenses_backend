@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/ttamalito/expenses_backend#readme",
   "dependencies": {
     "express": "^4.19.2",
+    "moment": "^2.30.1",
     "mongodb": "^6.6.1"
   },
   "devDependencies": {
