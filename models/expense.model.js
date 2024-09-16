@@ -11,7 +11,7 @@ const COLLECTION = 'expenses'
  * @param type
  * @param notes
  * @param year
- * @param date
+ * @param {Date} date - a valid Date object
  * @returns {Promise<any>}
  */
 async function createExpense(amount, month, type, notes, year, date) {
@@ -122,6 +122,15 @@ async function modifySingleExpense(expenseId, amount, month, type, notes, year, 
 
 }
 
+async function modifyDateOfExpense(expenseId, date) {
+    const result = await db.getDatabase().collection(COLLECTION).updateOne(
+        {_id: expenseId}, {$set: {date: date}}
+    );
+
+    return result.modifiedCount === 1;
+
+}
+
 module.exports = {
     createExpense: createExpense,
     getExpenseById: getExpenseById,
@@ -129,5 +138,6 @@ module.exports = {
     getAllExpensesForAYear: getAllExpensesForAYear,
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
     queryTotalSpentOnAYear: queryTotalSpentOnAYear,
-    modifySingleExpense: modifySingleExpense
+    modifySingleExpense: modifySingleExpense,
+    modifyDateOfExpense: modifyDateOfExpense
 }
