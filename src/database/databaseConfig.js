@@ -2,6 +2,7 @@ const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 // database instance
 let db;
+let mongoClient;
 /**
  * Creates a connection to a MongoDB database
  * @param port Url of the database
@@ -10,6 +11,8 @@ let db;
 async function connectToDataBase(port, databaseName) {
     // create a client
     const client = await MongoClient.connect(port);
+    // save the client
+    mongoClient = client;
     // now initiate the db instance
     db = client.db(databaseName);
 }
@@ -30,7 +33,13 @@ function getDatabase() {
     return db;
 }
 
+// close the connection
+function closeConnection() {
+     mongoClient.close();
+}
+
 module.exports = {
     connectToDataBase: connectToDataBase,
-    getDatabase: getDatabase
+    getDatabase: getDatabase,
+    closeConnection: closeConnection
 }
