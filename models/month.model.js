@@ -1,4 +1,4 @@
-const db = require('../database/databaseConfig');
+const db = require('../src/database/databaseConfig');
 const ObjectId = require('mongodb').ObjectId;
 
 const COLLECTION = 'months'

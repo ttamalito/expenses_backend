@@ -3,7 +3,7 @@ const express = require('express');
 
 //const path = require('path');
 // import files
-const db = require('./database/databaseConfig');
+const db = require('./src/database/databaseConfig');
 const addCORSHeader = require('./middlewares/addCORSHeader');
 
 
