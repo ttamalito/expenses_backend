@@ -4,7 +4,7 @@ const express = require('express');
 //const path = require('path');
 // import files
 const db = require('./src/database/databaseConfig');
-const addCORSHeader = require('./middlewares/addCORSHeader');
+const addCORSHeader = require('./src/middlewares/addCORSHeader');
 
 
 //const bodyParser = require('body-parser');
