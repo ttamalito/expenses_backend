@@ -61,7 +61,17 @@ describe('Query Expenses of a type', () => {
         const endpoint = `/expenses/single-type?year=${year}&type=${type}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
-        console.log(response);
     })
+
+    it('Query all types', async ()=> {
+        let type;
+        const allTypes = Object.values(types);
+        for (let i = 0; i < allTypes.length; i++) {
+            type = allTypes[i];
+            const endpoint = `/expenses/single-type?year=${year}&type=${type}`;
+            const response = await request(app).get(endpoint);
+            expect(response.status).toEqual(200);
+        }
+    });
 
 })
