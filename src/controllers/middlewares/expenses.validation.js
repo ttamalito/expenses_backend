@@ -41,7 +41,7 @@ function addExpense(req, res, next) {
     const month = parseInt(req.body.month);
     const correctMonth = getMonth(month);
     if (correctMonth === 'a') {
-        res.status(400).json({result: false, message: 'Month should be between 1 and 12'});
+        return res.status(400).json({result: false, message: 'Month should be between 1 and 12'});
     }
 
     if (stringIsInteger(req.body.year) === false) {
