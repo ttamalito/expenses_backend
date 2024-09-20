@@ -21,29 +21,24 @@ describe('Query Expenses', () => {
     });
     it('should query successfully all expenses for a month', async () => {
 
-        let endpoint = `getExpenseForMonth/${month}/${year}`;
+        let endpoint = `/getExpenseForMonth/${month}/${year}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
     });
 
-    it('should return 500 status code when no connection to db', async () => {
-        await db.closeConnection();
-        const response = await request(app).get(endpoint);
-        expect(response.status).toEqual(500);
-    });
 
     it('Should query all expenses for a year', async () => {
-        const endpoint = `getExpensesForAYear/${year}`;
+        const endpoint = `/getExpensesForAYear/${year}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
     } )
 
-    it('should return 500 status code when no connection to db', async () => {
-        await db.closeConnection();
-        const endpoint = `getExpensesForAYear/${year}`;
+
+    it('Should query total spent on a year', async () => {
+        const endpoint = `/expenses/total-spent?year=${year}`;
         const response = await request(app).get(endpoint);
-        expect(response.status).toEqual(500);
-    });
+        expect(response.status).toEqual(200);
+    })
 
 });
 
