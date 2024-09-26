@@ -4,8 +4,8 @@
   "description": "Simple app to keep track of expenses",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js"
+    "test": "jest",
+    "start": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
     "mongodb": "^6.6.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^7.0.0"
   }
 }
