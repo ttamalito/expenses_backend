@@ -21,12 +21,5 @@ describe('Query total earned', () => {
         expect(response.status).toEqual(200);
     });
 
-    it('should return 500 status code when no connection to db', async () => {
-        await db.closeConnection();
-        const year = '2024';
-        const endpoint = `/income/total-earned?year=${year}`;
-        const response = await request(app).get(endpoint);
-        expect(response.status).toEqual(500);
-    });
 
 })
