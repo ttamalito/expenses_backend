@@ -34,7 +34,7 @@ app.use(addCORSHeader);
 // use the routes
 app.use(baseRoutes);
 app.use(expenseRoutes);
-app.use(setUpRoutes);
+app.use('/budget', setUpRoutes);
 app.use( '/income',incomeRoutes);
 // the http server
 
