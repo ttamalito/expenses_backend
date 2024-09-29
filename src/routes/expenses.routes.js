@@ -10,7 +10,7 @@ router.post('/addExpense', expensesValidator.addExpense ,expensesController.addE
 
 router.get('/getExpenseForMonth/:month/:year', expensesController.getExpensesForAMonth);
 
-router.post('/getExpensesOfType/:month/:year', expensesController.getExpensesOfATypeForAMonth);
+router.post('/expenses/single-type/:month/:year', expensesController.getExpensesOfATypeForAMonth);
 
 router.get('/getExpensesForAYear/:year', expensesController.getExpensesForAYear);
 
