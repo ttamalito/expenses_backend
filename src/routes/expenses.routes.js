@@ -8,7 +8,7 @@ const expensesValidator = require('../controllers/middlewares/expenses.validatio
 
 router.post('/addExpense', expensesValidator.addExpense ,expensesController.addExpense);
 
-router.get('/getExpenseForMonth/:month/:year', expensesController.getExpensesForAMonth);
+router.get('/expenses/monthly/:month/:year', expensesController.getExpensesForAMonth);
 
 router.post('/expenses/single-type/:month/:year', expensesController.getExpensesOfATypeForAMonth);
 

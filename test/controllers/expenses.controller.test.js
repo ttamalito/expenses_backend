@@ -21,7 +21,7 @@ describe('Query Expenses', () => {
     });
     it('should query successfully all expenses for a month', async () => {
 
-        let endpoint = `/getExpenseForMonth/${month}/${year}`;
+        let endpoint = `/expenses/monthly/${month}/${year}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
     });
