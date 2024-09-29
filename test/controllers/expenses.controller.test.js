@@ -28,7 +28,7 @@ describe('Query Expenses', () => {
 
 
     it('Should query all expenses for a year', async () => {
-        const endpoint = `/getExpensesForAYear/${year}`;
+        const endpoint = `/expenses/yearly/${year}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
     } )

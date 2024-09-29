@@ -12,7 +12,7 @@ router.get('/expenses/monthly/:month/:year', expensesController.getExpensesForAM
 
 router.post('/expenses/single-type/:month/:year', expensesController.getExpensesOfATypeForAMonth);
 
-router.get('/getExpensesForAYear/:year', expensesController.getExpensesForAYear);
+router.get('/expenses/yearly/:year', expensesController.getExpensesForAYear);
 
 router.get('/expenses/single-type', expensesController.getExpensesForAYearOfAType); // query params: year, type
 
