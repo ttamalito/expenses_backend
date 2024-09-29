@@ -1,4 +1,4 @@
-const setUpModel = require('../models/setup.model');
+const budgetModel = require('../models/budget.model');
 const {set} = require("express/lib/application");
 const {parse} = require("nodemon/lib/cli");
 const expensesTypes = require('../utils/types');
@@ -13,7 +13,7 @@ async function getSetUp(req, res, next) {
     // get the year from the url
     const year = parseInt(req.params.year);
 
-    const setUp = await setUpModel.getSetUpByYear(year);
+    const setUp = await budgetModel.getSetUpByYear(year);
 
     if (setUp) {
         return res.json({result: true, setUp: setUp});
@@ -51,11 +51,11 @@ async function modifySetUp(req, res, next) {
 
     //console.log(`MOnth budget: ${monthBudget}`);
 
-    const savedResult = await setUpModel.modifySetUpByYear(year, monthBudget, typesBudget);
+    const savedResult = await budgetModel.modifySetUpByYear(year, monthBudget, typesBudget);
 
     if (!savedResult) {
         // create a new setup
-        const created = await setUpModel.createSetUp(year, monthBudget, typesBudget); // TODO: change this!!ºººººººº12º
+        const created = await budgetModel.createSetUp(year, monthBudget, typesBudget); // TODO: change this!!ºººººººº12º
         if (!created) {
             return res.json({result: false});
         }
