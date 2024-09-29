@@ -13,7 +13,7 @@ const addCORSHeader = require('./middlewares/addCORSHeader');
 // import the routes
 const baseRoutes = require('./routes/base.routes');
 const expenseRoutes = require('./routes/expenses.routes')
-const setUpRoutes = require('./routes/setup.routes');
+const setUpRoutes = require('./routes/budget.routes');
 const incomeRoutes = require('./routes/income.routes');
 
 const app = express();
