@@ -4,7 +4,7 @@ const expenseModel = require('../models/expense.model');
 const monthModel = require('../models/month.model');
 const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
 const incomeModel = require('../models/income.model');
-const setUpModel = require('../models/setup.model');
+const budgetModel = require('../models/budget.model');
 const {ObjectId} = require("mongodb");
 
 /**
@@ -47,7 +47,7 @@ async function addExpense(req, res, next) {
         // there is nothing
         // create a new month
         // query the global set up from the database
-        const setUp = await setUpModel.getSetUpByYear(2024);
+        const setUp = await budgetModel.getSetUpByYear(2024);
         if (!setUp) {
             // there is nothing in the database
             return res.json({result: false, message: 'No setup for the year'});
