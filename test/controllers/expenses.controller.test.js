@@ -21,14 +21,14 @@ describe('Query Expenses', () => {
     });
     it('should query successfully all expenses for a month', async () => {
 
-        let endpoint = `/getExpenseForMonth/${month}/${year}`;
+        let endpoint = `/expenses/monthly/${month}/${year}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
     });
 
 
     it('Should query all expenses for a year', async () => {
-        const endpoint = `/getExpensesForAYear/${year}`;
+        const endpoint = `/expenses/yearly/${year}`;
         const response = await request(app).get(endpoint);
         expect(response.status).toEqual(200);
     } )

@@ -6,7 +6,7 @@ const isValidTransactionType = require("../utils/validation/isValidTransactionTy
 const expenseModel = require("../../models/expense.model");
 const incomeModel = require("../../models/income.model");
 const monthModel = require("../../models/month.model");
-const setUpModel = require("../../models/setup.model");
+const budgetModel = require("../../models/budget.model");
 
 /**
  * Validates all the data for addExpense in expenses.controller
