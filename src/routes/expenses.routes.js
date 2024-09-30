@@ -20,4 +20,6 @@ router.get('/total-spent', expensesController.getTotalSpentOnAYear); // query pa
 
 router.post('/modify', expensesController.modifySingleExpense) // query params: id
 
+router.get('/total-spent/monthly', expensesValidator.getTotalSpentOnAMonth , expensesController.getTotalSpentOnAMonth); // query params: month, year, type
+
 module.exports = router;
