@@ -304,12 +304,20 @@ async function getTotalSpentOnAMonth(req, res, next) {
 
     let totalSpent = 0;
     if (type === 'all') {
+        const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
+        if (monthId === null) {
+            return res.status(200).json({message: 'No expenses for the month and year', totalSpent: 0});
+        }
         const totalSpentOnAllTypes = await monthModel.queryTotalSpentOnTheMonth(month, year);
         if (totalSpentOnAllTypes === null || totalSpentOnAllTypes === undefined) {
             return res.status(500).json({message: 'Failed to query the total spent on the month'});
         }
          totalSpent = totalSpentOnAllTypes;
     } else {
+        const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
+        if (monthId === null) {
+            return res.status(200).json({message: 'No expenses for the month and year', totalSpent: 0});
+        }
         const totalSpentOnSingleType = await monthModel.queryTotalSpentOnTheMonthForAType(month, year, type);
         if (totalSpentOnSingleType === null || totalSpentOnSingleType === undefined) {
             return res.status(500).json({message: 'Failed to query the total spent on the month'});

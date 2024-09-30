@@ -86,7 +86,6 @@ describe('Query total spent on a month', () => {
         const type = types.ESSENTIAL_FOOD;
         const endpoint = `/expenses/total-spent/monthly?month=${month}&year=${year}&type=${type}`;
         const response = await request(app).get(endpoint);
-        console.log(response.body);
         expect(response.status).toEqual(200);
     });
 
@@ -98,7 +97,6 @@ describe('Query total spent on a month', () => {
             const type = allTypes[i];
             const endpoint = `/expenses/total-spent/monthly?month=${month}&year=${year}&type=${type}`;
             const response = await request(app).get(endpoint);
-            console.log(response.body);
             expect(response.status).toEqual(200);
         }
     });
@@ -109,7 +107,6 @@ describe('Query total spent on a month', () => {
         const type = 'all';
         const endpoint = `/expenses/total-spent/monthly?month=${month}&year=${year}&type=${type}`;
         const response = await request(app).get(endpoint);
-        console.log(response.body);
         expect(response.status).toEqual(200);
     });
 
