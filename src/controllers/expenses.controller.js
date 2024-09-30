@@ -285,6 +285,41 @@ async function modifySingleExpense(req, res, next) {
     }
 }
 
+/**
+ * Returns the total spent on a month
+ * There are 3 query parameters
+ * month: the month
+ * year: the year
+ * type: the type expense
+ * if type === all, the query the total spent on the month
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
+async function getTotalSpentOnAMonth(req, res, next) {
+    const month = parseInt(req.query.month);
+    const year = parseInt(req.query.year);
+    const type = req.query.type;
+
+    let totalSpent = 0;
+    if (type === 'all') {
+        const totalSpentOnAllTypes = await monthModel.queryTotalSpentOnTheMonth(month, year);
+        if (totalSpentOnAllTypes === null || totalSpentOnAllTypes === undefined) {
+            return res.status(500).json({message: 'Failed to query the total spent on the month'});
+        }
+         totalSpent = totalSpentOnAllTypes;
+    } else {
+        const totalSpentOnSingleType = await monthModel.queryTotalSpentOnTheMonthForAType(month, year, type);
+        if (totalSpentOnSingleType === null || totalSpentOnSingleType === undefined) {
+            return res.status(500).json({message: 'Failed to query the total spent on the month'});
+        }
+        totalSpent = totalSpentOnSingleType;
+    }
+
+    return res.status(200).json({totalSpent: totalSpent});
+}
+
 
 
 module.exports = {
@@ -294,5 +329,6 @@ module.exports = {
     getExpensesForAYear: getExpensesForAYear,
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
     getTotalSpentOnAYear: getTotalSpentOnAYear,
-    modifySingleExpense: modifySingleExpense
+    modifySingleExpense: modifySingleExpense,
+    getTotalSpentOnAMonth: getTotalSpentOnAMonth
 }
