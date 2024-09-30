@@ -3,10 +3,12 @@ const stringIsInteger = require("../utils/validation/stringIsInteger");
 const getMonth = require("../../utils/getMonth");
 const isValidType = require("../utils/validation/validType");
 const isValidTransactionType = require("../utils/validation/isValidTransactionType");
+const validMonthFromReq = require("../utils/validation/validMonthFromReq");
 const expenseModel = require("../../models/expense.model");
 const incomeModel = require("../../models/income.model");
 const monthModel = require("../../models/month.model");
 const budgetModel = require("../../models/budget.model");
+const validYearFromReq = require("../utils/validation/validYearFromReq");
 
 /**
  * Validates all the data for addExpense in expenses.controller
@@ -71,4 +73,37 @@ function addExpense(req, res, next) {
     next();
 } // end of add expense
 
-module.exports = {addExpense};
+/**
+ * Validates all the data for getTotalSpentOnAMonth in expenses.controller
+ * GET /expenses/total-spent/monthly?month=1&year=2020&type=someType
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function getTotalSpentOnAMonth(req, res, next) {
+
+    const result = validMonthFromReq(req, true);
+    if (!result.result) {
+        return res.status(400).json({message: result.message});
+    }
+
+    const yearResult = validYearFromReq(req, true);
+
+    if (!yearResult.result) {
+        return res.status(400).json({message: yearResult.message});
+    }
+
+    const type = req.query.type;
+    if (!isValidType(type) && type !== 'all') {
+        return res.status(400).json({result: false, message: 'Invalid Expense type'});
+    }
+
+    next();
+
+}
+
+module.exports = {
+    addExpense,
+    getTotalSpentOnAMonth
+};
