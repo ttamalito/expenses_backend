@@ -1,6 +1,6 @@
 const db = require('../database/databaseConfig');
 const ObjectId = require('mongodb').ObjectId;
-
+const expensesModel = require('./expense.model');
 const COLLECTION = 'months'
 
 /**
@@ -97,7 +97,7 @@ async function getMonthIdByNumberAndYear(month, year) {
         return result._id;
     }
 
-    return false;
+    return null;
 }
 
 /**
@@ -131,6 +131,73 @@ async function getMonth(id) {
     return result;
 }
 
+/**
+ * Queries the amount of money spent in a month
+ * @param month
+ * @param year
+ * @returns {Promise<number | null>}
+ */
+async function queryTotalSpentOnTheMonth(month, year) {
+    const monthId = await getMonthIdByNumberAndYear(month, year);
+
+    if (!monthId) {
+        return null;
+    }
+
+    const allExpenses = await getAllExpenses(monthId);
+
+    if (!allExpenses) {
+        return null;
+    }
+
+    if (allExpenses.length === 0) {
+        return 0;
+    }
+
+    let total = 0;
+    for (let i = 0; i < allExpenses.length; i++) {
+        const expense = await expensesModel.getExpenseById(allExpenses[i]);
+        total += expense.amount;
+    }
+
+    return total;
+}
+
+/**
+ * Queries the amount of money spent in a month for a single type
+ * @param {number} month
+ * @param {number} year
+ * @param {string} type
+ * @returns {Promise<number | null>}
+ */
+async function queryTotalSpentOnTheMonthForAType(month, year, type) {
+    const monthId = await getMonthIdByNumberAndYear(month, year);
+
+    if (!monthId) {
+        return null;
+    }
+
+    const allExpenses = await getAllExpenses(monthId);
+
+    if (!allExpenses) {
+        return null;
+    }
+
+    if (allExpenses.length === 0) {
+        return 0;
+    }
+
+    let total = 0;
+    for (let i = 0; i < allExpenses.length; i++) {
+        const expense = await expensesModel.getExpenseById(allExpenses[i]);
+        if (expense.type === type) {
+            total += expense.amount;
+        }
+    }
+
+    return total;
+}
+
 
 module.exports = {
     createMonth: createMonth,
@@ -139,6 +206,7 @@ module.exports = {
     getMonthIdByNumberAndYear: getMonthIdByNumberAndYear,
     getMonth: getMonth,
     getAllIncomes,
-    addIncome
-
+    addIncome,
+    queryTotalSpentOnTheMonth,
+    queryTotalSpentOnTheMonthForAType
 }
