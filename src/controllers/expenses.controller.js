@@ -4,7 +4,7 @@ const expenseModel = require('../models/expense.model');
 const monthModel = require('../models/month.model');
 const queryExpensesOfAType = require('../utils/queryExpensesOfAType');
 const incomeModel = require('../models/income.model');
-const setUpModel = require('../models/setup.model');
+const budgetModel = require('../models/budget.model');
 const {ObjectId} = require("mongodb");
 
 /**
@@ -47,7 +47,7 @@ async function addExpense(req, res, next) {
         // there is nothing
         // create a new month
         // query the global set up from the database
-        const setUp = await setUpModel.getSetUpByYear(2024);
+        const setUp = await budgetModel.getSetUpByYear(2024);
         if (!setUp) {
             // there is nothing in the database
             return res.json({result: false, message: 'No setup for the year'});
@@ -285,6 +285,49 @@ async function modifySingleExpense(req, res, next) {
     }
 }
 
+/**
+ * Returns the total spent on a month
+ * There are 3 query parameters
+ * month: the month
+ * year: the year
+ * type: the type expense
+ * if type === all, the query the total spent on the month
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
+async function getTotalSpentOnAMonth(req, res, next) {
+    const month = parseInt(req.query.month);
+    const year = parseInt(req.query.year);
+    const type = req.query.type;
+
+    let totalSpent = 0;
+    if (type === 'all') {
+        const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
+        if (monthId === null) {
+            return res.status(200).json({message: 'No expenses for the month and year', totalSpent: 0});
+        }
+        const totalSpentOnAllTypes = await monthModel.queryTotalSpentOnTheMonth(month, year);
+        if (totalSpentOnAllTypes === null || totalSpentOnAllTypes === undefined) {
+            return res.status(500).json({message: 'Failed to query the total spent on the month'});
+        }
+         totalSpent = totalSpentOnAllTypes;
+    } else {
+        const monthId = await monthModel.getMonthIdByNumberAndYear(month, year);
+        if (monthId === null) {
+            return res.status(200).json({message: 'No expenses for the month and year', totalSpent: 0});
+        }
+        const totalSpentOnSingleType = await monthModel.queryTotalSpentOnTheMonthForAType(month, year, type);
+        if (totalSpentOnSingleType === null || totalSpentOnSingleType === undefined) {
+            return res.status(500).json({message: 'Failed to query the total spent on the month'});
+        }
+        totalSpent = totalSpentOnSingleType;
+    }
+
+    return res.status(200).json({totalSpent: totalSpent});
+}
+
 
 
 module.exports = {
@@ -294,5 +337,6 @@ module.exports = {
     getExpensesForAYear: getExpensesForAYear,
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
     getTotalSpentOnAYear: getTotalSpentOnAYear,
-    modifySingleExpense: modifySingleExpense
+    modifySingleExpense: modifySingleExpense,
+    getTotalSpentOnAMonth: getTotalSpentOnAMonth
 }

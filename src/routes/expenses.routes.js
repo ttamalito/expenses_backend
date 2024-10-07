@@ -6,18 +6,20 @@ const expensesController = require('../controllers/expenses.controller');
 const expensesValidator = require('../controllers/middlewares/expenses.validation');
 
 
-router.post('/addExpense', expensesValidator.addExpense ,expensesController.addExpense);
+router.post('/add', expensesValidator.addExpense ,expensesController.addExpense);
 
-router.get('/getExpenseForMonth/:month/:year', expensesController.getExpensesForAMonth);
+router.get('/monthly/:month/:year', expensesController.getExpensesForAMonth);
 
-router.post('/getExpensesOfType/:month/:year', expensesController.getExpensesOfATypeForAMonth);
+router.post('/single-type/:month/:year', expensesController.getExpensesOfATypeForAMonth);
 
-router.get('/getExpensesForAYear/:year', expensesController.getExpensesForAYear);
+router.get('/yearly/:year', expensesController.getExpensesForAYear);
 
-router.get('/expenses/single-type', expensesController.getExpensesForAYearOfAType); // query params: year, type
+router.get('/single-type', expensesController.getExpensesForAYearOfAType); // query params: year, type
 
-router.get('/expenses/total-spent', expensesController.getTotalSpentOnAYear); // query params: year
+router.get('/total-spent', expensesController.getTotalSpentOnAYear); // query params: year
 
-router.post('/expenses/modify', expensesController.modifySingleExpense) // query params: id
+router.post('/modify', expensesController.modifySingleExpense) // query params: id
+
+router.get('/total-spent/monthly', expensesValidator.getTotalSpentOnAMonth , expensesController.getTotalSpentOnAMonth); // query params: month, year, type
 
 module.exports = router;
