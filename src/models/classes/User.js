@@ -1,6 +1,16 @@
 const { v4: uuidv4 } = require('uuid');
 
-
+/**
+ * Represents a user
+ * @param {string} id - the uuid of the user
+ * @param {string} username
+ * @param {string} hashedPassword
+ * @param {string} email
+ * @param {number} currency_id -int in the database
+ * @param {string} profilePicturePath
+ * @param {number} monthlyBudget - Decimal in the database
+ * @param {Date} creationDate
+ */
 class User {
 
     id;
@@ -45,10 +55,10 @@ class User {
      * @param id
      * @param username
      * @param hashedPassword
-     * @param email
+     * @param {string} email
      * @param currency_id
-     * @param profilePicturePath
-     * @param monthlyBudget
+     * @param {string} profilePicturePath
+     * @param {number} monthlyBudget
      * @param creationDate
      * @returns {boolean}
      */
