@@ -35,6 +35,25 @@ async function createUser(user) {
     }
 }
 
+/**
+ * Queries a user from the database by its id
+ * @param userId
+ * @returns {Promise<User|null>}
+ */
+async function queryUserById(userId){
+    const connection = await mySql.createDbConnection();
+    try {
+        const [results, fields] = await connection.query('SELECT * FROM `users` WHERE id =?', [userId]);
+        if(results.length > 0){
+            return new User(results[0]);
+        }
+        return null;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 
 module.exports = {
     createUser
