@@ -40,7 +40,8 @@ jobs:
         DB_PORT: 3306
       run: |
         sudo systemctl start mysql.service
-        mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
+        mysql -uroot -proot
+        CREATE DATABASE IF NOT EXISTS $DB_DATABASE;
       
     - run: npm ci
     - run: npm run build --if-present
