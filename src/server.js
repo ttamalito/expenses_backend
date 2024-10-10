@@ -2,14 +2,23 @@ const db = require("./database/databaseConfig");
 const app = require("./app");
 const PORT = 'mongodb://localhost:27017';
 const databaseName = 'expenses_db';
-
+const createDbConnection = require('./database/mysqlDbConfig').createDbConnection;
 let server;
 // start listening, if we connect to the database
 db.connectToDataBase(PORT, databaseName).then(
     () => {
         // the promise was fulfilled
-        server = app.listen(8080);
-        console.log('Listening on port 8080');
+        const port = process.env.PORT || 3000;
+        server = app.listen(port);
+        console.log('Listening on port ' + port);
+        createDbConnection().then(async (connection) => {
+            console.log('Connected to the SQL database');
+            connection.end();
+        }).catch((error) => {
+            console.error(error);
+            console.log('Error connection to the SQL database');
+            throw error;
+        });
     }
 ).catch(
     (error) => {
