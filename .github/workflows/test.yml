@@ -41,7 +41,7 @@ jobs:
       run: |
         sudo systemctl start mysql.service
         mysql -uroot -proot
-        CREATE DATABASE IF NOT EXISTS $DB_DATABASE;
+        mysql -e 'CREATE DATABASE IF NOT EXISTS expensesdb;' -uroot -proot
       
     - run: npm ci
     - run: npm run build --if-present
