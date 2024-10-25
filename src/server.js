@@ -1,7 +1,7 @@
 const db = require("./database/databaseConfig");
 const app = require("./app");
 const PORT = 'mongodb://localhost:27017';
-const databaseName = 'expenses_db';
+const databaseName = process.env.MONGO_DEV_DB ||  'expenses_db';
 const createDbConnection = require('./database/mysqlDbConfig').createDbConnection;
 let server;
 // start listening, if we connect to the database
