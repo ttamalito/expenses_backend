@@ -22,4 +22,11 @@ router.post('/modify', expensesController.modifySingleExpense) // query params: 
 
 router.get('/total-spent/monthly', expensesValidator.getTotalSpentOnAMonth , expensesController.getTotalSpentOnAMonth); // query params: month, year, type
 
+router.delete('/delete', expensesValidator.deleteExpense, expensesController.deleteExpense); // params are in the body (expenseId, month, year)
+
+router.options('/delete', (req, res, next) => {
+    res.append('content-type', 'application/json',)
+    return res.status(200).send();
+})
+
 module.exports = router;

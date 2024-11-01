@@ -131,6 +131,20 @@ async function modifyDateOfExpense(expenseId, date) {
 
 }
 
+/**
+ * Deletes an expense from the database
+ * @param {ObjectId} expenseId
+ * @returns {Promise<void>}
+ */
+async function deleteExpense(expenseId) {
+
+    const result = await db.getDatabase().collection(COLLECTION).deleteOne(
+        {_id: expenseId}
+    );
+
+    return result.deletedCount === 1;
+}
+
 module.exports = {
     createExpense: createExpense,
     getExpenseById: getExpenseById,
@@ -139,5 +153,6 @@ module.exports = {
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
     queryTotalSpentOnAYear: queryTotalSpentOnAYear,
     modifySingleExpense: modifySingleExpense,
-    modifyDateOfExpense: modifyDateOfExpense
+    modifyDateOfExpense: modifyDateOfExpense,
+    deleteExpense: deleteExpense
 }
