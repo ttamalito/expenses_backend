@@ -9,6 +9,7 @@ const incomeModel = require("../../models/income.model");
 const monthModel = require("../../models/month.model");
 const budgetModel = require("../../models/budget.model");
 const validYearFromReq = require("../utils/validation/validYearFromReq");
+const ObjectId = require('mongodb').ObjectId;
 
 /**
  * Validates all the data for addExpense in expenses.controller
@@ -103,7 +104,32 @@ function getTotalSpentOnAMonth(req, res, next) {
 
 }
 
+/**
+ * Validates all the data for deleteExpense in expenses.controller
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function deleteExpense(req, res, next) {
+    if (!req.body.expenseId) {
+        return res.status(400).json({message: 'Expense Id is required'});
+    }
+
+    const expenseId = req.body.expenseId;
+
+
+    try {
+        const objectid = new ObjectId(expenseId);
+    } catch (e) {
+        return res.status(400).json({message: 'Invalid expense id'});
+    }
+
+    next();
+}
+
 module.exports = {
     addExpense,
-    getTotalSpentOnAMonth
+    getTotalSpentOnAMonth,
+    deleteExpense
 };

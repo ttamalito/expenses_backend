@@ -198,6 +198,19 @@ async function queryTotalSpentOnTheMonthForAType(month, year, type) {
     return total;
 }
 
+/**
+ * Removes an expense from the month
+ * @param {ObjectId} expenseId
+ * @returns {Promise<boolean>}
+ */
+async function removeExpense(expenseId) {
+    const result = await db.getDatabase().collection(COLLECTION).updateMany(
+        {}, {$pull: {expenses: expenseId}}
+    );
+
+    return result.modifiedCount === 1;
+}
+
 
 module.exports = {
     createMonth: createMonth,
@@ -208,5 +221,6 @@ module.exports = {
     getAllIncomes,
     addIncome,
     queryTotalSpentOnTheMonth,
-    queryTotalSpentOnTheMonthForAType
+    queryTotalSpentOnTheMonthForAType,
+    removeExpense
 }

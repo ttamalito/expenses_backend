@@ -329,6 +329,40 @@ async function getTotalSpentOnAMonth(req, res, next) {
     return res.status(200).json({totalSpent: totalSpent});
 }
 
+/**
+ * Deletes an expense from the database
+ * by removing it from the month and then deleting the expense
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
+async function deleteExpense(req, res, next) {
+    const expenseId = req.body.expenseId;
+
+    let expenseIdAsObjectId;
+    try {
+        expenseIdAsObjectId = new ObjectId(expenseId);
+    } catch (err) {
+        return res.status(400).json({ message: 'The expense is not a valid ObjectID'});
+    }
+
+
+    const expenseWasRemovedFromMonth = await monthModel.removeExpense(expenseIdAsObjectId);
+
+    if (!expenseWasRemovedFromMonth) {
+        return res.status(500).json({ message: 'Failed to remove the expense from the month'});
+    }
+
+    const expenseWasDeleted = await expenseModel.deleteExpense(expenseIdAsObjectId);
+
+    if (!expenseWasDeleted) {
+        return res.status(500).json({ message: 'Failed to delete the expense'});
+    }
+
+    return res.status(204).send();
+}
+
 
 
 module.exports = {
@@ -339,5 +373,6 @@ module.exports = {
     getExpensesForAYearOfAType: getExpensesForAYearOfAType,
     getTotalSpentOnAYear: getTotalSpentOnAYear,
     modifySingleExpense: modifySingleExpense,
-    getTotalSpentOnAMonth: getTotalSpentOnAMonth
+    getTotalSpentOnAMonth: getTotalSpentOnAMonth,
+    deleteExpense: deleteExpense
 }
