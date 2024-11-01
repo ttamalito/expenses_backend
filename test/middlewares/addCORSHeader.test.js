@@ -22,7 +22,7 @@ describe('Check CORS Headers are present', () => {
         expect(response.headers['access-control-allow-origin']).toEqual('http://localhost:3000');
         expect(response.headers['access-control-allow-credentials']).toEqual('true');
         expect(response.headers['access-control-allow-methods']).toEqual('GET, POST, PUT, DELETE, OPTIONS');
-        expect(response.headers['access-control-allow-headers']).toEqual('append,delete,entries,foreach,get,has,keys,set,values,Authorization');
+        expect(response.headers['access-control-allow-headers']).toEqual('append,delete,entries,foreach,get,has,keys,set,values,Authorization,content-type');
     });
 
 

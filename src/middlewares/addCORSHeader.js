@@ -9,7 +9,7 @@ function addCORSHeader(req, res, next) {
     res.append('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.append('Access-Control-Allow-Credentials', 'true');
     res.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.append('Access-Control-Allow-Headers', 'append,delete,entries,foreach,get,has,keys,set,values,Authorization, content-type');
+    res.append('Access-Control-Allow-Headers', 'append,delete,entries,foreach,get,has,keys,set,values,Authorization,content-type');
     next()
 }
 
