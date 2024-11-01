@@ -47,6 +47,7 @@ async function addExpense(req, res, next) {
         // there is nothing
         // create a new month
         // query the global set up from the database
+        // TODO: address #21
         const setUp = await budgetModel.getSetUpByYear(2024);
         if (!setUp) {
             // there is nothing in the database
