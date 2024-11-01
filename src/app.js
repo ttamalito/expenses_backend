@@ -26,6 +26,7 @@ app.use(express.urlencoded({
     type: 'application/x-www-form-urlencoded'
 }));
 
+app.use(express.json());
 
 app.use(addCORSHeader);
 
