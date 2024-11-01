@@ -270,13 +270,14 @@ async function modifySingleExpense(req, res, next) {
 
     const expense = await expenseModel.getExpenseById(expenseId);
     if (!expense) {
-        res.status(400).json({result: false, message: 'The expense does not exist'});
+        res.status(400).json({message: 'The expense does not exist'});
     }
 
     try {
         const result = await expenseModel.modifySingleExpense(expenseId, amount, expense.month, type, notes, expense.year ,date);
+        const expenseToSend = await expenseModel.getExpenseById(expenseId);
         if (result) {
-            return res.status(204).send();
+            return res.status(200).json({expense: expenseToSend});
         } else {
             return res.status(500).json({result: false, message: 'Failed to modify the expense'});
         }
