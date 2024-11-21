@@ -83,11 +83,41 @@ async function queryTotalEarnedForAYear(year) {
     return total;
 }
 
+/**
+ * Queries the total amount earned for a given month
+ * @param month
+ * @param year
+ * @returns {Promise<number>}
+ */
+async function queryTotalEarnedForAMonth(month, year) {
+    const incomes = await queryIncomesByMonthAndYear(month, year);
+    if (!incomes) {
+        return 0;
+    }
+    let total = 0;
+    for (const income of incomes) {
+        total += income.amount;
+    }
+    return total;
+}
+
+async function queryTotalEarnedForAYearInAMonthlyBasis(year) {
+    let result = [];
+
+    for (let i = 1; i <= 12; i++) {
+        const total = await queryTotalEarnedForAMonth(i, year);
+        result.push({month: i, total: total});
+    }
+    return result;
+}
+
 
 module.exports = {
     getIncomeById,
     createIncome,
     queryIncomesByMonthAndYear,
     queryAllIncomesOfAYear,
-    queryTotalEarnedForAYear
+    queryTotalEarnedForAYear,
+    queryTotalEarnedForAMonth,
+    queryTotalEarnedForAYearInAMonthlyBasis
 }
